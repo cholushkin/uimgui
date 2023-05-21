@@ -14,7 +14,18 @@ using UnityEngine;
 namespace UImGui
 {
 	public class ShowDemoWindow : MonoBehaviour
-	{
+    {
+#if !UIMGUI_REMOVE_IMPLOT
+        public bool ShowPlotWindowSampleOnStart;
+#endif
+
+#if !UIMGUI_REMOVE_IMNODES
+		public bool ShowNodesWindowSampleOnStart;
+#endif
+
+        public bool ShowDemoWindowSampleOnStart;
+
+
 #if !UIMGUI_REMOVE_IMPLOT
 		[SerializeField]
 		float[] _barValues = Enumerable.Range(1, 10).Select(x => (x * x) * 1.0f).ToArray();
@@ -37,7 +48,7 @@ namespace UImGui
 		private void OnLayout(UImGui uImGui)
 		{
 #if !UIMGUI_REMOVE_IMPLOT
-			if (ImGui.Begin("Plot Window Sample"))
+			if (ShowPlotWindowSampleOnStart && ImGui.Begin("Plot Window Sample"))
 			{
 				ImGui.SetNextWindowSize(Vector2.one * 200, ImGuiCond.Once);
 				ImPlot.BeginPlot("Plot test");
@@ -50,7 +61,7 @@ namespace UImGui
 #endif
 
 #if !UIMGUI_REMOVE_IMNODES
-			if (ImGui.Begin("Nodes Window Sample"))
+			if (ShowNodesWindowSampleOnStart && ImGui.Begin("Nodes Window Sample"))
 			{
 				ImGui.SetNextWindowSize(Vector2.one * 300, ImGuiCond.Once);
 				imnodes.BeginNodeEditor();
@@ -75,7 +86,8 @@ namespace UImGui
 			}
 #endif
 
-			ImGui.ShowDemoWindow();
+			if(ShowDemoWindowSampleOnStart)
+			    ImGui.ShowDemoWindow();
 		}
 	}
 }
